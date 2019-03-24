@@ -12,32 +12,47 @@
 
     <form th:action="@{/search/results}">
         <h2>Search by:</h2>
+          <!-- <p th:unless="${cheeses} and ${cheeses.size()}">No Cheeses"</p> -->
 
-        <p>
-            <span th:each="column : ${columns}">
-                <input
-                        type="radio"
-                        name="searchType"
-                        th:id="${column.key}"
-                        th:value="${column.key}"
-                        th:checked="${column.key == 'all'}"/>
-                <label th:for="${column.key}" th:text="${column.value}"></label>
-            </span>
+<p>
+    <span th:each="column : ${columns}">
+        <input
+                type="radio"
+                name="searchType"
+                th:id="${column.key}"
+                th:value="${column.key}"
+                th:checked="${column.key == 'all'}"/>
+       <label th:for="${column.key}" th:text="${column.value}"></label>
+        <ul>
+            <li th:each="column : ${jobs}" th:text="${row.get(key) + ' - ' + row.get(value)}"></li>
 
-        </p>
+        </ul>
+    </span>
 
-        <p>
-            <label for="searchTerm">Keyword:</label>
-            <input type="text" name="searchTerm" id="searchTerm" />
-        </p>
+</p>
 
-        <input type="submit" value="Search" />
-    </form>
+<p>
+    <label for="searchTerm">Keyword:</label>
+    <input type="text" name="searchTerm" id="searchTerm" />
+</p>
 
-    <hr />
+<input type="submit" value="Search" />
+</form>
 
-    <!-- TODO #2 - Loop over jobs map to display all job fields -->
+<hr />
 
+<!--TODO #2 - Loop over jobs map to display all job fields -->
+    <p th:unless="${jobs} and ${jobs.size()}">No jobs</p>
+    <div th:if="${jobs} and ${jobs.size()}">
+
+            <table th:each="job : ${jobs}" class="job-listing">
+               <tr th:each="jobitem : ${job}" >
+                    <td th:text="${#strings.capitalizeWords(jobitem.key)}"/>
+                    <td th:text="${jobitem.value}"/>
+                </tr>
+            </table>
+
+    </div>
 </div>
 
 </body>
